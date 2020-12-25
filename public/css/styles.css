@@ -1,0 +1,264 @@
+/** General Styling **/
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto Slab', serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+.container {
+    min-height: 100%;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+
+
+
+
+/** Navbar **/
+.navbar {
+    background-color: #318fb5;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1%;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 20px;
+}
+
+#brand {
+    font-size: 1.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.payorder-table {
+    width: 100%;
+    padding: 1%;
+}
+
+table {
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    
+    padding: 0.5%;
+    text-align: center;
+}
+
+
+
+
+
+
+
+/** Dashboard Styling **/
+
+
+.dashboard-container {
+    display: flex;
+    padding: 1% 0;
+ 
+}
+
+.dashboard-container > div {
+    padding: 1%;
+}
+
+.general-info {
+    flex: 15%;
+    background-color: #318fb5;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+}
+
+.dashboard-table {
+    flex: 85%;
+    background-color: #00bcd4;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 0.5% 0;
+}
+
+.table-search {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 1% 0;
+}
+
+.normal-search {
+    flex: 30%;
+}
+
+.date-search {
+    flex: 60%;
+}
+
+.export-to-excel {
+    flex: 10%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+
+
+
+
+
+
+
+
+/** Pagination **/
+.pagination {
+    background-color: #f6ecf0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1%;
+}
+
+.pagination .pagination-result {
+    flex: 90%;
+}
+
+.pagination .next-prev {
+    display: flex;
+    justify-content: space-around;
+    flex: 10%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/** Modals **/
+
+.modal {
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.modal-close {
+    position: absolute;
+    right: 2%;
+    top: 2%;
+    font-size: 30px;
+}
+
+.modal-content {
+    background-color: green;
+    width: 50%;
+    margin: auto;
+    padding: 2%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-animation-name: animatetomiddle;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetomiddle;
+    animation-duration: 0.4s
+    
+}
+
+
+/* Add Animation */
+@-webkit-keyframes animatetomiddle {
+    from {top:-300px; opacity:0} 
+    to {top:50%; opacity:1}
+  }
+  
+  @keyframes animatetomiddle {
+    from {top:-300px; opacity:0}
+    to {top:50%; opacity:1}
+  }
+
+.modal-content form {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.modal-content form > div {
+    width: 50%;
+    padding: 2%;
+}
+
+.modal-content form input {
+    width: 100%;
+}
+
+
+.show {
+    display: block;
+}
+
+
+
+
+
+/** Footer **/
+.footer {
+    background-color: green;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1% 0;
+}
+

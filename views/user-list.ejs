@@ -1,0 +1,85 @@
+<%- include("partials/header") -%>
+
+
+<div class="user-list">
+    <button class="modal-displayer" id = "user-modal-button">Add User</button>
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Username</th>
+                <th>Designation</th>
+                <th>Status</th>
+                <th>Change Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% users.forEach(user => { %>
+                <tr>
+                    <td><%= user.user_id %></td>
+                    <td><%= user.first_name %></td>
+                    <td><%= user.last_name %></td>
+                    <td><%= user.username %></td>
+                    <td><%= user.designation %></td>
+                    <td><%= user.status %></td>
+                    <td>
+                        <form action="/users/user-status" method="POST">
+                            <input type="hidden" name="statusValue" value=<%= user.status %>>
+                            <button type="submit" name="status" value = <%= user.user_id %>>change</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+<div class="modal">
+    <button class="modal-close">
+        X
+    </button>
+    <div class="modal-content">
+        <form action="/users/add-user" method="POST">
+            <div class="user-info">
+                <div class="input">
+                    <label for="first_name">First Name</label>
+                    <input type="text" name="first_name">
+                </div>
+                <div class="input">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" name="last_name">
+                </div>
+                <div class="input">
+                    <label for="username">Username</label>
+                    <input type="text" name="username">
+                </div>
+                <div class="input">
+                    <label for="designation">Designation</label>
+                    <input type="text" name="designation">
+                </div>
+                <div class="input">
+                    <label for="password">Password</label>
+                    <input type="password" name="password">
+                </div>
+                <div class="input">
+                    <label for="confirmation_password">Confirm Password</label>
+                    <input type="password" name="confirmation_password">
+                </div>
+            </div>
+            <div class="submit-button">
+                <button type="submit">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<%- include("partials/footer") -%>

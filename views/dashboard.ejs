@@ -1,0 +1,230 @@
+<%- include("partials/header") -%>
+
+
+<div class="dashboard">
+    <div class="dashboard-container">
+        <div class="general-info">
+            <h1>General Info goes here</h1>
+        </div>
+        <div class="dashboard-table">
+            <div class="table-header">
+                <div class="header">
+                    <h2>Payorder Details</h2>
+                </div>
+                <div class="modal-button">
+                    <button class="modal-displayer">Add Payorder</button>
+                </div>
+            </div>
+            <div class="table-search">
+                <div class="view-limit">
+                    <form action="/dashboard" method="POST">
+                        <input type="hidden" name="viewLimitForm">
+                        <select name="viewLimit" onchange="this.form.submit()">
+                            <option value="<%= viewLimit %>">
+                                <%= viewLimit %>
+                            </option>
+                            <option value="<%= viewLimit === 20 ? 30 : viewLimit === 50 ? 20 : 30 %>">
+                                <%= viewLimit === 20 ? 30 : viewLimit === 30 ? 20 : 20 %>
+                            </option>
+                            <option value="<%= viewLimit === 20 ? 50 : viewLimit === 30 ? 50 : 30 %>">
+                                <%= viewLimit === 20 ? 50 : viewLimit === 30 ? 50 : 30 %>
+                            </option>
+                        </select>
+                    </form>
+                </div>
+                <div class="normal-search">
+                    <form action="/dashboard" method="POST">
+                        <%# comment - value attribute is only needed to display the search text %> 
+                        <input type="hidden" name="viewLimit" value="<%= viewLimit %>">
+                        <input type="text" 
+                        name="searchValue"
+                        value="<%= typeof searchText === 'undefined' ? '' : searchText %>" 
+                        placeholder="Search a payorder" 
+                        onchange="this.form.submit()" 
+                        />
+                    </form>
+                </div>
+                <div class="date-search">
+                    <form action="/dashboard" method="POST">
+                        <input type="hidden" name="viewLimit" value="<%= viewLimit %>">
+                        <label for="from">From: </label>
+                        <input type="date"
+                        value="<%= typeof start_date === 'undefined' ? '' : start_date %>" 
+                        name="start_date" 
+                        />
+                        <label for="to">To: </label>
+                        <input type="date" 
+                        name="end_date" 
+                        value="<%= typeof end_date === 'undefined' ? '' : end_date %>"
+                        />
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+                <div class="export-to-excel">
+                    <button class="export-buttons">export to excel</button>
+                </div>
+            </div>
+            <div class="main-table">
+                <div class="payorder-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Serial No.</th>
+                                <th>Date</th>
+                                <th>Payorder No.</th>
+                                <th>Bank Name</th>
+                                <th>Branch Name</th>
+                                <th>Receiver Name</th>
+                                <th>Total Amount</th>
+                                <th>Release Status</th>
+                                <th>Approval Status</th>
+                                <th>Remarks</th>
+                                <% if(user === "rafez") { %>
+                                    <th>Change Status</th>
+                                <% } %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+                                <% payorders.forEach(payorder => { %>
+                                    <tr>
+                                        <td><%= payorder.serial_no %></td>
+                                        <td><%= payorder.date_time %></td>
+                                        <td><%= payorder.payorder_no %></td>
+                                        <td><%= payorder.bank_name %></td>
+                                        <td><%= payorder.branch_name %></td>
+                                        <td><%= payorder.receiver_name %></td>
+                                        <td><%= payorder.total_amount %></td>
+                                        <td><%= payorder.release_status %></td>
+                                        <td><%= payorder.approval_status %></td>
+                                        <td><%= payorder.remarks %></td>
+                                        <% if(user === "rafez") { %>
+                                            <td>
+                                                <form action="/change-status" method="POST">
+                                                    <input type="hidden" name="statusValue" value= "<%= payorder.status %>">
+                                                    <button type="submit" name="status" value = <%= payorder.payorder_no %> >change</button>
+                                                </form>
+                                            </td>
+                                        <% } %>
+                                    </tr>
+                                <% }); %>
+                           
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+
+                    <div class="pagination-result">
+                        <p style="font-weight: bold;">showing <%= offset === 0 ? 0 : offset + 1 %> to 
+                            <%= offset + viewLimit > totalCount ? totalCount : totalCount < offset ? offset : offset + viewLimit %> of 
+                            <%= totalCount %> results</p>
+                    </div>
+
+
+                    <div class="next-prev">
+                        <form class="pagination-form" action="/dashboard" method="POST">
+
+                            <%# Comment %>
+                            <%# If dashboard is populated with date-searched items and total item count is more than 10 %>
+                            <input type="hidden" 
+                            name="start_date" 
+                            value="<%= totalCount > viewLimit && typeof start_date !== 'undefined' ? start_date : '' %>">
+                            <input type="hidden" 
+                            name="end_date" 
+                            value="<%= totalCount > viewLimit && typeof end_date !== 'undefined' ? end_date : '' %>">
+
+
+                            <%# Comment %>
+                            <%# If dashboard is populated with text-searched items and total item count is more than 10 %> 
+                            <input type="hidden" 
+                            name="searchedText" 
+                            value="<%= totalCount > viewLimit && typeof searchText !== 'undefined' ? searchText : '' %>">
+                            <input type="hidden" name="viewLimit" value="<%= viewLimit %>">
+
+                            <button type="submit" name = "offset" value = "<%= offset === 0 ? 0 : offset - viewLimit %>"><i class="fas fa-angle-left"></i></button>
+                        </form>
+                        <form class="pagination-form" action="/dashboard" method="POST">
+
+                            <%# Comment %>
+                            <%# If dashboard is populated with date-searched items and total item count is more than 10 %> 
+                            <input type="hidden" 
+                            name="start_date" 
+                            value="<%= totalCount > viewLimit && typeof start_date !== 'undefined' ? start_date : '' %>">
+                            <input type="hidden" 
+                            name="end_date" 
+                            value="<%= totalCount > viewLimit && typeof end_date !== 'undefined' ? end_date : '' %>">
+                            
+
+                            <%# Comment %>
+                            <%# If dashboard is populated with text-searched items and total item count is more than 10 %> 
+                            <input type="hidden" 
+                            name="searchedText" 
+                            value="<%= totalCount > viewLimit && typeof searchText !== 'undefined' ? searchText : '' %>">
+                            <input type="hidden" name="viewLimit" value="<%= viewLimit %>">
+                            
+                            <button type="submit" name = "offset" value= "<%= offset + viewLimit > totalCount ? offset : offset + viewLimit %>"><i class="fas fa-angle-right"></i></button>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="modal">
+    <button class="modal-close">
+        X
+    </button>
+    <div class="modal-content">
+        <form action="/add-payorder" method="POST">
+            <div class="input">
+                <label for="date">Date</label> <br>
+                <input type="date" name="date_time" id = "date_picker">
+                <p class="validation-para" style="display: none; color: red">fill up this field</p>
+            </div>
+            <div class="input">
+                <label for="payorder-no">Payorder No</label>
+                <input type="text" name="payorder_no">
+            </div>
+            <div class="input">
+                <label for="bank-name">Bank Name</label>
+                <input type="text" name="bank_name">
+            </div>
+            <div class="input">
+                <label for="branch-name">Branch Name</label>
+                <input type="text" name="branch_name">
+            </div>
+            <div class="input">
+                <label for="receiver-name">Receiver Name</label>
+                <input type="text" name="receiver_name">
+            </div>
+            <div class="input">
+                <label for="amount">Total Amount</label>
+                <input type="text" name="total_amount">
+            </div>
+            <div class="input">
+                <label for="remarks">Remarks</label>
+                <input type="text" name="remarks">
+            </div>
+            <div class="modal-button">
+                <button type="submit">Post</button>
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+
+
+
+
+<%- include("partials/footer") -%>
